@@ -1,0 +1,76 @@
+<%page expression_filter="h"/>
+<%inherit file="main.html" />
+<%namespace name='static' file='static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+from django.urls import reverse
+
+from openedx.core.djangolib.markup import HTML, Text
+%>
+
+<main id="main" aria-label="Content" tabindex="-1">
+    <section class="home">
+      <div class="anet-video-container">
+        <video id="anet-video" preload="preload" autoplay loop muted>
+          <source src="${static.url("videos/header_video.mp4")}" type="video/mp4" />
+        </video>
+      </div>
+      <div class="anet-cursos-title" style="
+      margin-bottom: 15vh;
+      margin-top: 5vh;    ">NOSOTROS</div>
+      <div class="container-fluid"><div class="row" style="
+        margin-bottom: 15vh;
+        margin-top: 5vh;    ">
+      <div class="col"><video preload="preload" loop="" muted="" style="
+        height: 50vh;
+        position: absolute;    ">
+              <source  src="${static.url("videos/1.mp4")}" type="video/mp4">
+            </video></div>
+      <div class="col"><video preload="preload" autoplay="" loop="" muted="" style="
+        height: 55vh;
+        padding-left: 25%;
+        z-index: 2;
+        position: absolute;" controls="">
+              <source src="${static.url("videos/1.mp4")}" type="video/mp4">
+            </video>
+          </div>
+      <div class="col"><video preload="preload" loop="" muted="" style="
+        height: 50vh;
+        padding-left: 75%;    ">
+              <source src="${static.url("videos/1.mp4")}" type="video/mp4">
+            </video></div>
+    </div></div>
+      <div class="anet-cursos-title">NUESTROS CURSOS</div>
+      <%include file="${courses_list}" />
+      <div class="anet-cursos-title">NUESTRA LIBRERIA</div>
+      <%include file="${courses_list}" />
+
+    </section>
+</main>
+
+
+% if show_homepage_promo_video:
+  <section id="video-modal" class="modal home-page-video-modal video-modal">
+    <div class="inner-wrapper">
+      <iframe title="YouTube Video" width="640" height="360" src="//www.youtube.com/embed/${homepage_promo_video_youtube_id}?showinfo=0" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+% endif
+
+<%block name="js_extra">
+   <script type="text/javascript">
+      $(window).load(function() {
+         if(getParameterByName('next')) {
+              $('#login').trigger("click");
+         }
+      })
+   </script>
+</%block>
+
+% if show_signup_immediately is not UNDEFINED:
+  ## NOTE: This won't work in production, because anonymous views are cached, so it will
+  ## show either with or without this extra js for 3 minutes at a time.
+<script type="text/javascript">
+  $(window).load(function() {$('#signup_action').trigger("click");});
+</script>
+% endif
